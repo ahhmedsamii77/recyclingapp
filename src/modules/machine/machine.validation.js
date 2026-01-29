@@ -14,7 +14,7 @@ const submitSchema = {
 const converPointsSchema = {
   body: z.object({
     fullName: z.string().min(3, { message: "Full name must be at least 3 characters long" }),
-    phone: z.string().min(3, { message: "Phone number must be at least 3 characters long" }),
+    phoneNumber: z.string().min(3, { message: "Phone number must be at least 3 characters long" }),
     points: z.number({ message: "Points is required" }),
   }),
 };

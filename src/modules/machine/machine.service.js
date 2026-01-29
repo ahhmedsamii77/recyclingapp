@@ -68,7 +68,11 @@ class MachineService {
       pointsEarned: -points,
       type: TransactionType.CONVERT,
     });
+ 
 
+    req.user.phone = phoneNumber;
+    await req.user.save();
+  
     return res.status(200).json({
       message: "Conversion request submitted successfully",
       moneyAdded: money,

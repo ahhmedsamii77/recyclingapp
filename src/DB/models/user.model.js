@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(RoleType),
       default: RoleType.USER,
     },
+    phone: { type: String },
   },
   {
     timestamps: true,
