@@ -22,10 +22,22 @@ const TokenType = {
   ACCESS: "access",
   REFRESH: "refresh",
 };
+const RoleType = {
+  USER: "user",
+  ADMIN: "admin",
+};
+const ConversionStatus = {
+  PENDING: "pending",
+  SENT: "sent",
+  FAILED: "failed",
+};
 
-export { TransactionType,
+export {
+  TransactionType,
   MethodType,
   MaterialType,
   GenderType,
   TokenType,
- };
+  RoleType,
+  ConversionStatus,
+};

@@ -1,5 +1,6 @@
 import z from "zod";
-import { GenderType, generalRules  } from "../../utils/index.js";
+import { GenderType, generalRules, RoleType  } from "../../utils/index.js";
+import { Types } from "mongoose";
 
 const signUpSchema = {
   body: z.object({
@@ -29,11 +30,28 @@ const loginShcema = {
   })
 };
 
-const getOneUserSchema = z.strictObject({
-  id: generalRules.id
-});
+const getOneUserSchema = {
+  params: z.object({
+    userId: z.string().refine((val) => Types.ObjectId.isValid(val), {
+      message: "Invalid user id",
+    }),
+  }),
+};
 
 export { signUpSchema,
   loginShcema,
   getOneUserSchema
  };
+
+
+ export const updateUserRoleSchema = {
+  params: z.object({
+    userId: z.string().refine((val) => Types.ObjectId.isValid(val), {
+      message: "Invalid user id",
+    }),
+  }),
+  body: z.object({
+    role: z.enum(RoleType, {error: "Invalid role"}),
+  }),
+};
+

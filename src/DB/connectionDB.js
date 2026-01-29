@@ -9,7 +9,6 @@
 // export { connectionDB,
 //  };
 
-
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.DB_URL;

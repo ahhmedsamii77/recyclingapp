@@ -9,6 +9,12 @@ async function generateToken({ payload, signature, options }) {
 async function verifyToken({ token, signature }) {
   return jwt.verify(token, signature);
 }
+export async function getSignature({  prefix }) {
+    if (prefix === process.env.USER_PREFIX) return process.env.TOKEN_USER;
+    else if (prefix == process.env.ADMIN_PREFIX) return process.env.TOKEN_ADMIN;
+    else return null;
+}
+
 
 async function decodeTokenAndFetchUser({ token, signature }) {
   const decoded = await verifyToken({ token, signature });

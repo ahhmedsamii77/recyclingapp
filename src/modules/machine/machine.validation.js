@@ -1,5 +1,6 @@
 import z from "zod";
-import { MaterialType, MethodType  } from "../../utils/index.js";
+import { ConversionStatus, MaterialType, MethodType  } from "../../utils/index.js";
+import { Types } from "mongoose";
 
 const submitSchema = {
   body: z.object({
@@ -12,13 +13,22 @@ const submitSchema = {
 
 const converPointsSchema = {
   body: z.object({
+    fullName: z.string().min(3, { message: "Full name must be at least 3 characters long" }),
+    phone: z.string().min(3, { message: "Phone number must be at least 3 characters long" }),
     points: z.number({ message: "Points is required" }),
-    method: z.enum([MethodType.BANK, MethodType.WALLET], {
-      message: "Invalid method",
-    }),
   }),
 };
 
+const updateConversionStatusSchema = {
+  params: z.object({
+    conversionId: z.string().refine((value) => Types.ObjectId.isValid(value), { message: "Invalid id" }),
+  }),
+  body: z.object({
+    status: z.enum([ConversionStatus.SENT, ConversionStatus.FAILED], { message: "Invalid status" }),
+  }),
+}
+
 export { submitSchema,
   converPointsSchema,
+  updateConversionStatusSchema
  };

@@ -1,25 +1,20 @@
-import { userModel  } from "../../DB/models/user.model.js";
-import { transactionModel  } from "../../DB/models/transaction.model.js";
+import { userModel } from "../../DB/models/user.model.js";
+import { transactionModel } from "../../DB/models/transaction.model.js";
 import { v4 as uuid } from "uuid";
-import { AppError,
+import {
+  AppError,
   Compare,
   generateToken,
   Hash,
- } from "../../utils/index.js";
+  RoleType,
+} from "../../utils/index.js";
 
 class UserService {
   constructor() {}
 
   // signup
   signUp = async (req, res, next) => {
-    const {
-      fName,
-      lName,
-      email,
-      password,
-      gender,
-      country,
-    } = req.body;
+    const { fName, lName, email, password, gender, country } = req.body;
 
     const isUserExist = await userModel.findOne({ email });
     if (isUserExist) throw new AppError("User already exist", 400);
@@ -52,11 +47,13 @@ class UserService {
 
     const jwtid = uuid();
     const token = await generateToken({
-      payload: { id: user._id, email },
-      signature: process.env.TOKEN,
+      payload: { id: user._id, email, role: user.role },
+      signature:
+        user.role === RoleType.USER
+          ? process.env.TOKEN_USER
+          : process.env.TOKEN_ADMIN,
       options: { jwtid },
     });
-
     return res.status(200).json({ message: "Login successfully", token });
   };
 
@@ -78,6 +75,61 @@ class UserService {
       userId: req.user._id,
     });
     return res.status(200).json({ transactions });
+  };
+
+  getUsers = async (req, res, next) => {
+    const users = await userModel.find().populate([
+      {
+        path: "transactions",
+      },
+      {
+        path: "conversions",
+      },
+    ]);
+    return res.status(200).json({ users });
+  };
+
+  updateUserRole = async (req, res, next) => {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    const user = await userModel.findById(userId);
+    if (!user) throw new AppError("User not found", 404);
+
+    if (req.user._id.toString() === userId) {
+      throw new AppError("You cannot change your own role", 400);
+    }
+
+    if (user.role === role) {
+      throw new AppError("User already has this role", 400);
+    }
+
+    if (user.role === RoleType.ADMIN) {
+      throw new AppError("You cannot change another admin's role", 403);
+    }
+
+    user.role = role;
+    await user.save();
+
+    res.status(200).json({
+      message: "User role updated successfully",
+      userId: user._id,
+      newRole: user.role,
+    });
+  };
+
+  getUserById = async (req, res, next) => {
+    const { userId } = req.params;
+    const user = await userModel.findById(userId).populate([
+      {
+        path: "transactions",
+      },
+      {
+        path: "conversions",
+      }
+    ]);
+    if (!user) throw new AppError("User not found", 404);
+    return res.status(200).json({ user });
   };
 }
 

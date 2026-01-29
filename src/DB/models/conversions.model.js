@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MethodType  } from "../../utils/index.js";
+import { ConversionStatus, MethodType  } from "../../utils/index.js";
 
 const conversionSchema = new mongoose.Schema(
   {
@@ -10,7 +10,7 @@ const conversionSchema = new mongoose.Schema(
     },
     pointsUsed: { type: Number, required: true },
     moneyAdded: { type: Number, required: true },
-    method: { type: String, enum: Object.values(MethodType), required: true },
+    status: { type: String, enum: Object.values(ConversionStatus), default: ConversionStatus.PENDING },
   },
   {
     timestamps: true,
