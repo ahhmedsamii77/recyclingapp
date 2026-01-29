@@ -38,17 +38,13 @@ userRouter.patch(
   validation(UV.updateUserRoleSchema),
   US.updateUserRole,
 );
+userRouter.get("/conversions", authentication(), US.getUserConversions);
+
 userRouter.get(
   "/:userId",
   authentication(),
   validation(UV.getOneUserSchema),
   US.getUserById,
-)
-
-userRouter.get(
-  "/conversions",
-  authentication(),
-  US.getUserConversions
-)
+);
 
 export { userRouter };
