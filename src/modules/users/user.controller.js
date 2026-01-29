@@ -48,7 +48,7 @@ userRouter.get(
 userRouter.get(
   "/conversions",
   authentication(),
-  MS.getUserConversions
+  US.getUserConversions
 )
 
 export { userRouter };
