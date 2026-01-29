@@ -44,4 +44,9 @@ userRouter.get(
   validation(UV.getOneUserSchema),
   US.getUserById,
 )
+machineRouter.get(
+  "/conversions",
+  authentication(),
+  MS.getUserConversions
+)
 export { userRouter };

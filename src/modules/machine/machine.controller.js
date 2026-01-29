@@ -32,9 +32,5 @@ machineRouter.patch(
   MS.updateConversionStatus,
 );
 
-machineRouter.get(
-  "/conversions",
-  authentication(),
-  MS.getUserConversions
-)
+
 export { machineRouter };

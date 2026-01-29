@@ -131,6 +131,10 @@ class UserService {
     if (!user) throw new AppError("User not found", 404);
     return res.status(200).json({ user });
   };
+    getUserConversions = async (req, res, next) => {
+    const conversions = await conversionModel.find({ userId: req.user._id });
+    return res.status(200).json({ conversions });
+  };
 }
 
 export default new UserService();
