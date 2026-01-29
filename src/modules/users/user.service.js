@@ -8,6 +8,7 @@ import {
   Hash,
   RoleType,
 } from "../../utils/index.js";
+import { conversionModel } from "../../DB/models/conversions.model.js";
 
 class UserService {
   constructor() {}
