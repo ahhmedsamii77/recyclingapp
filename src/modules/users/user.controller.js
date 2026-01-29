@@ -40,11 +40,14 @@ userRouter.patch(
 );
 userRouter.get("/conversions", authentication(), US.getUserConversions);
 
+
 userRouter.get(
   "/:userId",
   authentication(),
   validation(UV.getOneUserSchema),
   US.getUserById,
 );
+
+
 
 export { userRouter };

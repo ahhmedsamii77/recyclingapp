@@ -32,5 +32,16 @@ machineRouter.patch(
   MS.updateConversionStatus,
 );
 
-
+machineRouter.get(
+  "/transactions",
+  authentication(),
+  authorization(RoleType.ADMIN),
+  MS.getAllTransactions
+)
+machineRouter.get(
+  "/conversions",
+  authentication(),
+  authorization(RoleType.ADMIN),
+  MS.getAllConversions
+)
 export { machineRouter };

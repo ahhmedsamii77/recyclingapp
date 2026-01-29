@@ -136,6 +136,8 @@ class UserService {
     const conversions = await conversionModel.find({ userId: req.user._id });
     return res.status(200).json({ conversions });
   };
+  
+
 }
 
 export default new UserService();

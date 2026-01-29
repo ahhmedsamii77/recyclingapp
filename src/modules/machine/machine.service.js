@@ -98,6 +98,14 @@ class MachineService {
       conversion,
     });
   };
+  getAllTransactions = async (req, res, next) => {
+    const transactions = await transactionModel.find();
+    return res.status(200).json({ transactions });
+  };
 
+  getAllConversions = async (req, res, next) => {
+    const conversions = await conversionModel.find();
+    return res.status(200).json({ conversions });
+  };
 }
 export default new MachineService();
