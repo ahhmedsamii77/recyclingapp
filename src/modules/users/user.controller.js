@@ -38,8 +38,14 @@ userRouter.patch(
   validation(UV.updateUserRoleSchema),
   US.updateUserRole,
 );
+
 userRouter.get("/conversions", authentication(), US.getUserConversions);
 
+
+userRouter.post("/contactUs",authentication(), validation(UV.contactUsSchema), US.contactUS);
+
+
+userRouter.get("/contactUs", authentication(), authorization(RoleType.ADMIN),US.getContactUS);
 
 userRouter.get(
   "/:userId",
@@ -47,7 +53,6 @@ userRouter.get(
   validation(UV.getOneUserSchema),
   US.getUserById,
 );
-
 
 
 export { userRouter };

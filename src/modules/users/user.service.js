@@ -9,6 +9,7 @@ import {
   RoleType,
 } from "../../utils/index.js";
 import { conversionModel } from "../../DB/models/conversions.model.js";
+import { contactModel } from "../../DB/models/contact.model.js";
 
 class UserService {
   constructor() {}
@@ -137,6 +138,21 @@ class UserService {
     return res.status(200).json({ conversions });
   };
   
+  contactUS = async (req, res, next) => {
+    const { fullName, phoneNumber,email,country,message } = req.body;
+    const contact = await contactModel.create({
+      fullName,
+      phoneNumber,
+      email,
+      country,
+      message,
+    });
+    return res.status(200).json({ contact });
+  } 
+  getContactUS = async (req, res, next) => {
+    const contacts = await contactModel.find();
+    return res.status(200).json({ contacts });
+  }
 
 }
 

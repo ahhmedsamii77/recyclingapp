@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema(
       default: RoleType.USER,
     },
     phone: { type: String },
+    message: { type: String },
   },
   {
     timestamps: true,

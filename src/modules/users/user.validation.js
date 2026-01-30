@@ -55,3 +55,13 @@ export { signUpSchema,
   }),
 };
 
+
+export const contactUsSchema = {
+  body: z.object({
+    fullName: z.string().min(3, { message: "Full name must be at least 3 characters long" }),
+    email: generalRules.email,
+    phoneNumber: z.string().min(3, { message: "Phone number must be at least 3 characters long" }),
+    message: z.string().min(3, { message: "Message must be at least 3 characters long" }),
+    country: z.string().min(3, { message: "Country must be at least 3 characters long" }),
+  }),
+}
