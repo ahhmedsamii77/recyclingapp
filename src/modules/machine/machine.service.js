@@ -40,7 +40,7 @@ class MachineService {
   };
 
   convertPoints = async (req, res, next) => {
-    const { points, fullName, phoneNumber, price } = req.body;
+    const { points, fullName, phoneNumber, method } = req.body;
 
     if (points <= 0) throw new AppError("Points must be greater than 0", 400);
     if (req.user.points < points)
@@ -61,6 +61,7 @@ class MachineService {
       pointsUsed: points,
       moneyAdded: money,
       status: "pending",
+      method
     });
 
     await transactionModel.create({

@@ -11,11 +11,13 @@ const conversionSchema = new mongoose.Schema(
     pointsUsed: { type: Number, required: true },
     moneyAdded: { type: Number, required: true },
     status: { type: String, enum: Object.values(ConversionStatus), default: ConversionStatus.PENDING },
+    method: {type: String, enum: Object.values(MethodType), required: true},
   },
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    method: { type: String, enum: Object.values(MethodType), default: MethodType.PAYPAL },
   }
 );
 

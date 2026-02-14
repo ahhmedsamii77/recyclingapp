@@ -4,7 +4,7 @@ const TransactionType = {
 };
 
 const MethodType = {
-  BANK: "bank",
+  INSTAPAY: "instapay",
   WALLET: "wallet",
 };
 
@@ -31,6 +31,8 @@ const ConversionStatus = {
   SENT: "sent",
   FAILED: "failed",
 };
+
+
 
 export {
   TransactionType,
