@@ -76,6 +76,20 @@ class UserService {
     return res.status(200).json({ transactions });
   };
 
+deleteTransaction = async (req, res, next)=>{
+  const {transactionId} = req.params;
+  const transaction = await transactionModel.findByIdAndDelete(transactionId);
+  if(!transaction) throw new AppError("Transaction not found", 404);
+  return res.status(200).json({message: "Transaction deleted successfully", transaction}); 
+}
+
+deleteConversions = async (req, res)=>{
+  const {conversionId} = req.params;
+  const conversion = await conversionModel.findByIdAndDelete(conversionId);
+  if(!conversion) throw new AppError("Conversion not found", 404);
+  return res.status(200).json({message: "Conversion deleted successfully", conversion}); 
+}
+
   getUsers = async (req, res, next) => {
     const users = await userModel.find().populate([
       {
@@ -150,6 +164,36 @@ class UserService {
     const contacts = await contactModel.find();
     return res.status(200).json({ contacts });
   }
+
+  createUser = async (req, res, next) => {
+    const { fName, lName, email, password, gender, country } = req.body;
+
+    const isUserExist = await userModel.findOne({ email });
+    if (isUserExist) throw new AppError("User already exist", 400);
+
+    const hashedPassword = await Hash({ plainText: password });
+    const user = await userModel.create({
+      fName,
+      lName,
+      email,
+      password: hashedPassword,
+      gender,
+      country,
+      dateOfBirth: new Date().toISOString(),
+    });
+
+    return res.status(201).json({ message: "User created successfully", user });
+  };
+
+
+  deleteUser = async(req, res, next)=>{
+    const {userId} = req.params;
+    const user = await userModel.findByIdAndDelete(userId);
+    if(!user) throw new AppError("User not found", 404);
+    return res.status(200).json({message: "User deleted successfully", user}); 
+  }
+
+
 
 }
 

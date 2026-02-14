@@ -54,5 +54,12 @@ userRouter.get(
   US.getUserById,
 );
 
+userRouter.post("/createuser", authentication(), authorization(RoleType.ADMIN), validation(UV.createUser), US.createUser);
+
+userRouter.delete("/:userId", authentication(), authorization(RoleType.ADMIN), validation(UV.deleteUserSchema), US.deleteUser);
+
+userRouter.delete("/transactions/:transactionId", authentication(), authorization(RoleType.ADMIN), validation(UV.deleteTransactionSchema), US.deleteTransaction);
+
+userRouter.delete("/conversions/:conversionId", authentication(), authorization(RoleType.ADMIN), validation(UV.deleteConversionsSchema), US.deleteConversions);
 
 export { userRouter };
