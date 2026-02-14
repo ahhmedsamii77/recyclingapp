@@ -104,12 +104,16 @@ class MachineService {
     });
   };
   getAllTransactions = async (req, res, next) => {
-    const transactions = await transactionModel.find();
+    const transactions = await transactionModel.find().populate({
+      path: "userId",
+    });
     return res.status(200).json({ transactions });
   };
 
   getAllConversions = async (req, res, next) => {
-    const conversions = await conversionModel.find();
+    const conversions = await conversionModel.find().populate({
+      path: "userId",
+    });
     return res.status(200).json({ conversions });
   };
 }
