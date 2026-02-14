@@ -81,7 +81,7 @@ class UserService {
     return res.status(200).json({ transactions });
   };
 
-deleteTransaction = async (req, res, next)=>{
+deleteTransaction = async (req, res, njext)=>{
   const {transactionId} = req.params;
   const transaction = await transactionModel.findByIdAndDelete(transactionId);
   if(!transaction) throw new AppError("Transaction not found", 404);
@@ -90,11 +90,7 @@ deleteTransaction = async (req, res, next)=>{
 
 deleteConversions = async (req, res)=>{
   const {conversionId} = req.params;
-  const conversion = await conversionModel.findByIdAndDelete(conversionId).populate([
-    {
-      path: "userId",
-    },
-  ]);
+  const conversion = await conversionModel.findByIdAndDelete(conversionId)
   if(!conversion) throw new AppError("Conversion not found", 404);
   return res.status(200).json({message: "Conversion deleted successfully", conversion}); 
 }
@@ -114,7 +110,7 @@ deleteConversions = async (req, res)=>{
   updateUserRole = async (req, res, next) => {
     const { userId } = req.params;
     const { role } = req.body;
-
+    
     const user = await userModel.findById(userId);
     if (!user) throw new AppError("User not found", 404);
 
@@ -154,7 +150,11 @@ deleteConversions = async (req, res)=>{
     return res.status(200).json({ user });
   };
     getUserConversions = async (req, res, next) => {
-    const conversions = await conversionModel.find({ userId: req.user._id });
+    const conversions = await conversionModel.find({ userId: req.user._id }).populate([
+      {
+        path: "userId",
+      },
+    ]);
     return res.status(200).json({ conversions });
   };
   
