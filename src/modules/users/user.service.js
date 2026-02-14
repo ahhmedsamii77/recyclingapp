@@ -50,13 +50,10 @@ class UserService {
     const jwtid = uuid();
     const token = await generateToken({
       payload: { id: user._id, email, role: user.role },
-      signature:
-        user.role === RoleType.USER
-          ? process.env.TOKEN_USER
-          : process.env.TOKEN_ADMIN,
+      signature: process.env.TOKEN_SIGNATURE,
       options: { jwtid },
     });
-    return res.status(200).json({ message: "Login successfully", token });
+    return res.status(200).json({ message: "Login successfully", token, role: user.role });
   };
 
   // get me
