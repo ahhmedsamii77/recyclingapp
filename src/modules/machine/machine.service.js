@@ -1,3 +1,4 @@
+import { userModel } from "../../DB/models/user.model.js";
 import { conversionModel } from "../../DB/models/conversions.model.js";
 import { transactionModel } from "../../DB/models/transaction.model.js";
 import {
@@ -11,9 +12,14 @@ class MachineService {
   constructor() {}
 
   submit = async (req, res, next) => {
-    const { materialType, weight } = req.body;
-    let points = 0;
+    const { phone, materialType, weight } = req.body;
 
+    const user = await userModel.findOne({ phone });
+    if (!user) {
+      return res.status(404).json({ found: false });
+    }
+
+    let points = 0;
     if (materialType === MaterialType.PLASTIC) {
       points = weight;
     } else if (materialType === MaterialType.CAN) {
@@ -22,11 +28,11 @@ class MachineService {
       throw new AppError("Invalid material type", 400);
     }
 
-    req.user.points += points;
-    await req.user.save();
+    user.points += points;
+    await user.save();
 
     await transactionModel.create({
-      userId: req.user._id,
+      userId: user._id,
       materialType,
       weight,
       pointsEarned: points,
@@ -34,8 +40,33 @@ class MachineService {
     });
 
     return res.status(200).json({
+      found: true,
+      message: "Points added successfully",
+      user: {
+        name: user.fullName,
+        phone,  // return the original plain phone
+      },
       pointsAdded: points,
-      totalPoints: req.user.points,
+      totalPoints: user.points,
+    });
+  };
+
+  // Called by the machine to verify user exists before recycling starts
+  checkUser = async (req, res, next) => {
+    const { phone } = req.query;
+
+    const user = await userModel.findOne({ phone }).select("fName lName phone points");
+    if (!user) {
+      return res.status(404).json({ found: false });
+    }
+
+    return res.status(200).json({
+      found: true,
+      user: {
+        name: user.fullName,
+        phone,
+        points: user.points,
+      },
     });
   };
 

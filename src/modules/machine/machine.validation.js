@@ -4,6 +4,7 @@ import { Types } from "mongoose";
 
 const submitSchema = {
   body: z.object({
+    phone: z.string({ message: "Phone number is required" }).min(10, { message: "Phone number must be at least 10 digits" }),
     materialType: z.enum([MaterialType.PLASTIC, MaterialType.CAN], {
       message: "Invalid material type",
     }),
@@ -28,7 +29,10 @@ const updateConversionStatusSchema = {
   }),
 }
 
-export { submitSchema,
-  converPointsSchema,
-  updateConversionStatusSchema
- };
+const checkUserSchema = {
+  query: z.object({
+    phone: z.string({ message: "Phone number is required" }).min(10, { message: "Phone number must be at least 10 digits" }),
+  }),
+};
+
+export { submitSchema, converPointsSchema, updateConversionStatusSchema, checkUserSchema };

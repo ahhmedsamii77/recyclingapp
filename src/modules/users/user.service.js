@@ -16,7 +16,7 @@ class UserService {
 
   // signup
   signUp = async (req, res, next) => {
-    const { fName, lName, email, password, gender, country } = req.body;
+    const { fName, lName, email, password, gender, country, phone } = req.body;
 
     const isUserExist = await userModel.findOne({ email });
     if (isUserExist) throw new AppError("User already exist", 400);
@@ -30,6 +30,7 @@ class UserService {
       gender,
       country,
       dateOfBirth: new Date().toISOString(),
+      ...(phone && { phone }),
     });
 
     return res.status(201).json({ message: "User created successfully", user });

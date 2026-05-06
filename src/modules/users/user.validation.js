@@ -12,6 +12,7 @@ const signUpSchema = {
     gender: z.enum([GenderType.MALE, GenderType.FEMALE], { message: "Invalid gender" }),
     country: z.string().min(3, { message: "Country must be at least 3 characters long" }),
     dateOfBirth: z.string({ message: "Date of birth is required" }),
+    phone: z.string().min(10, { message: "Phone number must be at least 10 digits" }).optional(),
   }).superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({

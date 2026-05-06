@@ -12,9 +12,15 @@ const machineRouter = Router();
 
 machineRouter.post(
   "/submit",
-  authentication(),
   validation(MV.submitSchema),
   MS.submit,
+);
+
+// Called by the machine before recycling to confirm user identity on screen
+machineRouter.get(
+  "/check",
+  validation(MV.checkUserSchema),
+  MS.checkUser,
 );
 
 machineRouter.post(

@@ -50,6 +50,7 @@ async function bootstrap() {
   // machine routes
   app.use("/machine", machineRouter);
 
+
   // unhandled routes
   app.use((req, res, next) => {
     throw new AppError(`404 Not Found Url ${req.originalUrl}`, 404);
