@@ -49,5 +49,19 @@ machineRouter.get(
   authentication(),
   authorization(RoleType.ADMIN),
   MS.getAllConversions
-)
+);
+
+// ---------------------------------------------------------------------------
+// Override routes — for testing without USB / Serial Monitor
+// POST /machine/override  → set mode via Postman
+// GET  /machine/override  → ESP32 polls this before using AI result
+// ---------------------------------------------------------------------------
+machineRouter.post(
+  "/override",
+  validation(MV.setOverrideSchema),
+  MS.setOverride
+);
+
+machineRouter.get("/override", MS.getOverride);
+
 export { machineRouter };

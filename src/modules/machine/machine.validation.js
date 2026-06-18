@@ -1,5 +1,5 @@
 import z from "zod";
-import { ConversionStatus, MaterialType, MethodType  } from "../../utils/index.js";
+import { ConversionStatus, MaterialType, MethodType, OverrideMode } from "../../utils/index.js";
 import { Types } from "mongoose";
 
 const submitSchema = {
@@ -35,4 +35,12 @@ const checkUserSchema = {
   }),
 };
 
-export { submitSchema, converPointsSchema, updateConversionStatusSchema, checkUserSchema };
+const setOverrideSchema = {
+  body: z.object({
+    mode: z.enum([OverrideMode.CAN, OverrideMode.PLASTIC, OverrideMode.AUTO], {
+      message: `mode must be one of: ${Object.values(OverrideMode).join(", ")}`,
+    }),
+  }),
+};
+
+export { submitSchema, converPointsSchema, updateConversionStatusSchema, checkUserSchema, setOverrideSchema };

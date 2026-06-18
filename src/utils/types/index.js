@@ -32,6 +32,13 @@ const ConversionStatus = {
   FAILED: "failed",
 };
 
+// Used for temporary test override — forces machine to treat item as a specific material
+const OverrideMode = {
+  CAN: "can",
+  PLASTIC: "plastic",
+  AUTO: "auto", // disables override and uses AI model result
+};
+
 
 
 export {
@@ -42,4 +49,5 @@ export {
   TokenType,
   RoleType,
   ConversionStatus,
+  OverrideMode,
 };

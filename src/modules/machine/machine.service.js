@@ -5,8 +5,15 @@ import {
   AppError,
   ConversionStatus,
   MaterialType,
+  OverrideMode,
   TransactionType,
 } from "../../utils/index.js";
+
+// ---------------------------------------------------------------------------
+// In-memory override state
+// Resets to AUTO on every server cold start (which is fine for testing).
+// ---------------------------------------------------------------------------
+let overrideState = { mode: OverrideMode.AUTO };
 
 class MachineService {
   constructor() {}
@@ -146,6 +153,25 @@ class MachineService {
       path: "userId",
     });
     return res.status(200).json({ conversions });
+  };
+
+  // ---------------------------------------------------------------------------
+  // Override endpoints — for testing only
+  // POST /machine/override  → set mode: "can" | "plastic" | "auto"
+  // GET  /machine/override  → machine polls this before using AI result
+  // ---------------------------------------------------------------------------
+
+  setOverride = (req, res) => {
+    const { mode } = req.body;
+    overrideState = { mode };
+    return res.status(200).json({
+      message: `Override mode set to "${mode}"`,
+      ...overrideState,
+    });
+  };
+
+  getOverride = (req, res) => {
+    return res.status(200).json(overrideState);
   };
 }
 export default new MachineService();
