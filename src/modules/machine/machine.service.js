@@ -28,9 +28,9 @@ class MachineService {
 
     let points = 0;
     if (materialType === MaterialType.PLASTIC) {
-      points = weight;
+      points = weight * 0.25; // 1000g × 0.25 = 250 pts = 25 EGP
     } else if (materialType === MaterialType.CAN) {
-      points = weight * 4;
+      points = weight * 1.2;  // 1000g × 1.2 = 1200 pts = 120 EGP
     } else {
       throw new AppError("Invalid material type", 400);
     }
